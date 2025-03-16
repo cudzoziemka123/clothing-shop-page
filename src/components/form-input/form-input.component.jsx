@@ -1,5 +1,6 @@
 import { Group, FormInputLabel, Input } from './form-input.styles.jsx'
 
+//TODO Cделать поле ввода контролируемым? проверить
 const FormInput = ({ label, ...otherProps }) => {
   return (
     <Group>

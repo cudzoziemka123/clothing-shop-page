@@ -20,14 +20,19 @@ const SignInComponent = () => {
   const resetFormFields = () => {
     setFormFields(defaultFormFields)
   }
+
   const signInWithGoogle = async () => {
-    await signInWithGooglePopup()
+    try {
+      await signInWithGooglePopup()
+    } catch (error) {
+      //TODO Closed poppup by user error!!!!
+    }
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      const user = await signInAuthUserWithEmailAndPassword(email, password)
+      await signInAuthUserWithEmailAndPassword(email, password)
     } catch (error) {
       if (error.code === 'auth/invalid-credential') {
         alert('Password or email are incorrect')
@@ -44,7 +49,7 @@ const SignInComponent = () => {
   return (
     <SignUpContainer>
       <h2>Already have account</h2>
-      <span>Sign up with your email and password</span>
+      <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"

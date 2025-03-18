@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect, useReducer } from 'react'
-
+import { createContext, useReducer } from 'react'
+import { createAction } from '../utils/reducer/reducer.utils'
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === productToAdd.id
@@ -45,32 +45,35 @@ export const CartContext = createContext({
   totalValue: 0,
 })
 
-export const CART_ACTION_TYPES = {
+const INITIAL_STATE = {
+  isCartOpen: false,
+  cartItems: [],
+  cartCount: 0,
+  totalValue: 0,
+}
+
+const CART_ACTION_TYPES = {
+  SET_CART_ITEMS: 'SET_CART_ITEMS',
   SET_CART_OPEN: 'SET_CART_OPEN',
-  ADD_ITEM_TO_CART: 'ADD_ITEM_TO_CART',
-  REDUCE_ITEM_FROM_CART: 'REDUCE_ITEM_FROM_CART',
-  REMOVE_ITEM_FROM_CART: 'REMOVE_ITEM_FROM_CART',
 }
 
 const cartReducer = (state, action) => {
   const { type, payload } = action
   switch (type) {
-    case 'SET_CART_ITEMS':
+    case CART_ACTION_TYPES.SET_CART_ITEMS:
       return {
         ...state,
         ...payload,
+      }
+    case CART_ACTION_TYPES.SET_CART_OPEN:
+      return {
+        ...state,
+        isCartOpen: payload,
       }
 
     default:
       throw new Error(`unhandled type of ${type} in cartReducer`)
   }
-}
-
-const INITIAL_STATE = {
-  isCartOpen: true,
-  cartItems: [],
-  cartCount: 0,
-  totalValue: 0,
 }
 
 export const CartProvider = ({ children }) => {
@@ -86,14 +89,13 @@ export const CartProvider = ({ children }) => {
       return total + cartItem.quantity * cartItem.price
     }, 0)
 
-    dispatch({
-      type: 'SET_CART_ITEMS',
-      payload: {
+    dispatch(
+      createAction(CART_ACTION_TYPES.SET_CART_ITEMS, {
         cartItems: newCartItems,
         totalValue: newTotalValue,
         cartCount: newCartCount,
-      },
-    })
+      })
+    )
   }
 
   const addItemToCart = (productToAdd) => {
@@ -111,9 +113,13 @@ export const CartProvider = ({ children }) => {
     updateCartItemsReducer(newCartItems)
   }
 
+  const setIsCartOpen = (bool) => {
+    dispatch(createAction(CART_ACTION_TYPES.SET_CART_OPEN, bool))
+  }
+
   const value = {
     isCartOpen,
-    setIsCartOpen: () => {},
+    setIsCartOpen,
     addItemToCart,
     reduceItemInCart,
     removeItemFromCart,

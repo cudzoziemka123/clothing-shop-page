@@ -16,6 +16,7 @@ import {
   NavLink,
   NavLinks,
 } from './navigation.styles'
+import Toast from '../../components/toast/toast.component'
 
 const Navigation = () => {
   const { currentUser } = useContext(UserContext)
@@ -40,6 +41,7 @@ const Navigation = () => {
         </NavLinks>
         {isCartOpen && <CartDropdown />}
       </NavigationContainer>
+      <Toast />
       <Outlet />
     </>
   )

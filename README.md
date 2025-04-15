@@ -23,10 +23,6 @@ An e-commerce web application for browsing, filtering, and purchasing clothes on
 - Responsive design for mobile and desktop.
 - Smooth navigation with React Router.
 
-## 🖼️ Screenshots
-
-![Homepage Screenshot](./screenshots/homepage.png)
-![Product Page Screenshot](./screenshots/product-page.png)
 
 ## 🔧 Setup Instructions
 
